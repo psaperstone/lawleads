@@ -1,0 +1,57 @@
+<%= form_for(@property) do |f| %>
+  <% if @property.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@property.errors.count, "error") %> prohibited this property from being saved:</h2>
+
+      <ul>
+      <% @property.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :owner %><br>
+    <%= f.text_field :owner %>
+  </div>
+  <div class="field">
+    <%= f.label :prop_str_addr %><br>
+    <%= f.text_field :prop_str_addr %>
+  </div>
+  <div class="field">
+    <%= f.label :prop_city %><br>
+    <%= f.text_field :prop_city %>
+  </div>
+  <div class="field">
+    <%= f.label :prop_zip %><br>
+    <%= f.text_field :prop_zip %>
+  </div>
+  <div class="field">
+    <%= f.label :assessed_value %><br>
+    <%= f.number_field :assessed_value %>
+  </div>
+  <div class="field">
+    <%= f.label :prop_acct_num %><br>
+    <%= f.text_field :prop_acct_num %>
+  </div>
+  <div class="field">
+    <%= f.label :legal_desc %><br>
+    <%= f.text_area :legal_desc %>
+  </div>
+  <div class="field">
+    <%= f.label :mail_str_addr %><br>
+    <%= f.text_field :mail_str_addr %>
+  </div>
+  <div class="field">
+    <%= f.label :mail_city %><br>
+    <%= f.text_field :mail_city %>
+  </div>
+  <div class="field">
+    <%= f.label :mail_zip %><br>
+    <%= f.text_field :mail_zip %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

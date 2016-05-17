@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Owner:</strong>
+  <%= @property.owner %>
+</p>
+
+<p>
+  <strong>Prop str addr:</strong>
+  <%= @property.prop_str_addr %>
+</p>
+
+<p>
+  <strong>Prop city:</strong>
+  <%= @property.prop_city %>
+</p>
+
+<p>
+  <strong>Prop zip:</strong>
+  <%= @property.prop_zip %>
+</p>
+
+<p>
+  <strong>Assessed value:</strong>
+  <%= @property.assessed_value %>
+</p>
+
+<p>
+  <strong>Prop acct num:</strong>
+  <%= @property.prop_acct_num %>
+</p>
+
+<p>
+  <strong>Legal desc:</strong>
+  <%= @property.legal_desc %>
+</p>
+
+<p>
+  <strong>Mail str addr:</strong>
+  <%= @property.mail_str_addr %>
+</p>
+
+<p>
+  <strong>Mail city:</strong>
+  <%= @property.mail_city %>
+</p>
+
+<p>
+  <strong>Mail zip:</strong>
+  <%= @property.mail_zip %>
+</p>
+
+<%= link_to 'Edit', edit_property_path(@property) %> |
+<%= link_to 'Back', properties_path %>
