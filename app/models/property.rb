@@ -88,9 +88,12 @@ class Property < ActiveRecord::Base
     browser.find("a[href='javascript:MM_Edit();']").click
 
     # IF broswer.page = 'http://www.bcpa.net/RecSearch.asp' THEN skip to next record
-    if browser.page === 'http://www.bcpa.net/RecSearch.asp'
+    if browser.current_url.include? 'http://www.bcpa.net/RecSearch.asp'
       #save the incomplete record to the partial model
-      @partial.create() #ENTER THE 4 VARIABLES HERE (after adding new columns to the data structure)
+      Partial.create(:document_num => document_num,
+                      :owner => owner,
+                      :record_date => record_date,
+                      :doc_number_lp => doc_number_lp)
       next
     else
       prop_addr = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[1]/td[2]/span')[0].text
@@ -110,11 +113,36 @@ class Property < ActiveRecord::Base
 
   def parse_property_data(prop_addr, mail_addr)
     #parse the property data
+    prop_str_addr =
+    prop_city =
+    prop_state =
+    prop_zip =
+    prop_county =
+    mail_str_addr =
+    mail_city =
+    mail_state =
+    mail_state =
+    mail_zip =
+    mail_county =
   end
 
 
   def create_new_property
-    @property.create()   #ENTER THE 14 VARIABLES HERE (after adding new columns to the data structure)
+    Property.create(:owner => owner,
+                    :prop_str_addr => prop_str_addr,
+                    :prop_city => prop_city,
+                    :prop_zip => prop_zip,
+                    :home_value => home_value,
+                    :prop_acct_num => prop_acct_num,
+                    :legal_desc => legal_desc,
+                    :mail_str_addr => mail_str_addr,
+                    :mail_city => mail_city,
+                    :mail_zip => mail_zip,
+                    :prop_state => prop_state,
+                    :mail_state => mail_state,
+                    :document_num => document_num,
+                    :record_date => record_date,
+                    :doc_number_lp => doc_number_lp)
   end
 
 end
