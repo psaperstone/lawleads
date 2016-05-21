@@ -11,15 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521180543) do
+ActiveRecord::Schema.define(version: 20160521213344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "Properties_Users", id: false, force: :cascade do |t|
-    t.integer "user_id",     null: false
-    t.integer "property_id", null: false
-  end
 
   create_table "partials", force: :cascade do |t|
     t.string   "owner"
@@ -39,6 +34,8 @@ ActiveRecord::Schema.define(version: 20160521180543) do
     t.string   "document_num"
     t.date     "record_date"
     t.string   "doc_number_lp"
+    t.string   "prop_county"
+    t.string   "mail_county"
   end
 
   create_table "properties", force: :cascade do |t|
@@ -59,6 +56,8 @@ ActiveRecord::Schema.define(version: 20160521180543) do
     t.string   "document_num"
     t.date     "record_date"
     t.string   "doc_number_lp"
+    t.string   "prop_county"
+    t.string   "mail_county"
   end
 
   create_table "purchases", force: :cascade do |t|
