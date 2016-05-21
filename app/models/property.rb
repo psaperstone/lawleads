@@ -104,7 +104,8 @@ class Property < ActiveRecord::Base
       prop_id = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]/span')[0].text
       home_value = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[5]/tbody/tr[3]/td[4]/span')[0].text
       #begin to save the complete record to the property model
-      parse_property_data(prop_addr, mail_addr)
+      parse_property_data(prop_addr)
+      parse_mailing_data(mail_addr)
       #finish to save the complete record after parsing
       create_new_property
     end
@@ -140,6 +141,8 @@ class Property < ActiveRecord::Base
     parsed = JSON.parse(dom)
     address_components = parsed['results'][0]['address_components']
 
+    ## STLLL NEED TO DO NIL_CHECK IN CASE GOOGLE GEOLOCATER RUTURNS EMPTY JSON
+    ##
     mail_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
     mail_city = "#{address_components[3]["long_name"]}"
     mail_state = "#{address_components[5]["short_name"]}"
@@ -152,15 +155,17 @@ class Property < ActiveRecord::Base
     Property.create(:owner => owner,
                     :prop_str_addr => prop_str_addr,
                     :prop_city => prop_city,
+                    :prop_state => prop_state,
                     :prop_zip => prop_zip,
+                    :prop_county => prop_county,
+                    :mail_str_addr => mail_str_addr,
+                    :mail_city => mail_city,
+                    :mail_state => mail_state,
+                    :mail_zip => mail_zip,
+                    :mail_county => mail_county,
                     :home_value => home_value,
                     :prop_acct_num => prop_acct_num,
                     :legal_desc => legal_desc,
-                    :mail_str_addr => mail_str_addr,
-                    :mail_city => mail_city,
-                    :mail_zip => mail_zip,
-                    :prop_state => prop_state,
-                    :mail_state => mail_state,
                     :document_num => document_num,
                     :record_date => record_date,
                     :doc_number_lp => doc_number_lp)
