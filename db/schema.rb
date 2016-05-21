@@ -11,29 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517235433) do
+ActiveRecord::Schema.define(version: 20160521005408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "Properties_Users", id: false, force: :cascade do |t|
-    t.integer "user_id",     null: false
-    t.integer "property_id", null: false
-  end
 
   create_table "properties", force: :cascade do |t|
     t.string   "owner"
     t.string   "prop_str_addr"
     t.string   "prop_city"
     t.string   "prop_zip"
-    t.integer  "assessed_value"
+    t.integer  "home_value"
     t.string   "prop_acct_num"
     t.text     "legal_desc"
     t.string   "mail_str_addr"
     t.string   "mail_city"
     t.string   "mail_zip"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "purchases", force: :cascade do |t|
