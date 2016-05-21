@@ -110,20 +110,41 @@ class Property < ActiveRecord::Base
     end
   end
 
+  # search google geocode api for breakout of address components for property address
+  def parse_property_data(prop_addr)
+    search_addr = prop_addr.gsub(" ","+").gsub("-","+")
+    api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
 
-  def parse_property_data(prop_addr, mail_addr)
-    #parse the property data
-    prop_str_addr =
-    prop_city =
-    prop_state =
-    prop_zip =
-    prop_county =
-    mail_str_addr =
-    mail_city =
-    mail_state =
-    mail_state =
-    mail_zip =
-    mail_county =
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{search_addr}&key=#{api_key}"
+    response = HTTParty.get url
+
+    dom = Nokogiri::HTML(response.body)
+    parsed = JSON.parse(dom)
+    address_components = parsed['results'][0]['address_components']
+
+    prop_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
+    prop_city = "#{address_components[3]["long_name"]}"
+    prop_state = "#{address_components[5]["short_name"]}"
+    prop_zip = "#{address_components[7]["long_name"]}"
+    prop_county = "#{address_components[4]["long_name"]}"
+  end
+
+  def parse_mailing_data(mail_addr)
+    search_addr = mail_addr.gsub(" ","+").gsub("-","+")
+    api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
+
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{search_addr}&key=#{api_key}"
+    response = HTTParty.get url
+
+    dom = Nokogiri::HTML(response.body)
+    parsed = JSON.parse(dom)
+    address_components = parsed['results'][0]['address_components']
+
+    mail_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
+    mail_city = "#{address_components[3]["long_name"]}"
+    mail_state = "#{address_components[5]["short_name"]}"
+    mail_zip = "#{address_components[7]["long_name"]}"
+    mail_county = "#{address_components[4]["long_name"]}"
   end
 
 
