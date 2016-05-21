@@ -11,10 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521010912) do
+ActiveRecord::Schema.define(version: 20160521180543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "Properties_Users", id: false, force: :cascade do |t|
+    t.integer "user_id",     null: false
+    t.integer "property_id", null: false
+  end
 
   create_table "partials", force: :cascade do |t|
     t.string   "owner"
@@ -31,6 +36,9 @@ ActiveRecord::Schema.define(version: 20160521010912) do
     t.string   "mail_state"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.string   "document_num"
+    t.date     "record_date"
+    t.string   "doc_number_lp"
   end
 
   create_table "properties", force: :cascade do |t|
@@ -48,6 +56,9 @@ ActiveRecord::Schema.define(version: 20160521010912) do
     t.datetime "updated_at",    null: false
     t.string   "prop_state"
     t.string   "mail_state"
+    t.string   "document_num"
+    t.date     "record_date"
+    t.string   "doc_number_lp"
   end
 
   create_table "purchases", force: :cascade do |t|
