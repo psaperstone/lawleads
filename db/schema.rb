@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160521005921) do
+ActiveRecord::Schema.define(version: 20160521010912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "partials", force: :cascade do |t|
+    t.string   "owner"
+    t.string   "prop_str_addr"
+    t.string   "prop_city"
+    t.string   "prop_zip"
+    t.string   "prop_state"
+    t.integer  "home_value"
+    t.string   "prop_acct_num"
+    t.text     "legal_desc"
+    t.string   "mail_str_addr"
+    t.string   "mail_city"
+    t.string   "mail_zip"
+    t.string   "mail_state"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "properties", force: :cascade do |t|
     t.string   "owner"

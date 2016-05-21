@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  owner: MyString
+  prop_str_addr: MyString
+  prop_city: MyString
+  prop_zip: MyString
+  prop_state: MyString
+  home_value: 1
+  prop_acct_num: MyString
+  legal_desc: MyText
+  mail_str_addr: MyString
+  mail_city: MyString
+  mail_zip: MyString
+  mail_state: MyString
+
+two:
+  owner: MyString
+  prop_str_addr: MyString
+  prop_city: MyString
+  prop_zip: MyString
+  prop_state: MyString
+  home_value: 1
+  prop_acct_num: MyString
+  legal_desc: MyText
+  mail_str_addr: MyString
+  mail_city: MyString
+  mail_zip: MyString
+  mail_state: MyString
