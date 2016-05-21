@@ -5,6 +5,7 @@ class PropertiesController < ApplicationController
   # GET /properties.json
   def index
     @properties = Property.all
+    get_CSV
   end
 
   # GET /properties/1
@@ -69,6 +70,6 @@ class PropertiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def property_params
-      params.require(:property).permit(:owner, :prop_str_addr, :prop_city, :prop_zip, :assessed_value, :prop_acct_num, :legal_desc, :mail_str_addr, :mail_city, :mail_zip)
+      params.require(:property).permit(:owner, :prop_str_addr, :prop_city, :prop_state, :prop_zip, :prop_county, :home_value, :prop_acct_num, :legal_desc, :document_num, :record_date, :doc_number_lp, :mail_str_addr, :mail_city, :mail_state, :mail_zip, :mail_county)
     end
 end

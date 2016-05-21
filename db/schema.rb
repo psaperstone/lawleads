@@ -16,6 +16,11 @@ ActiveRecord::Schema.define(version: 20160521213344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "Properties_Users", id: false, force: :cascade do |t|
+    t.integer "user_id",     null: false
+    t.integer "property_id", null: false
+  end
+
   create_table "partials", force: :cascade do |t|
     t.string   "owner"
     t.string   "prop_str_addr"
