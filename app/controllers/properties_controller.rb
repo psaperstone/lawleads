@@ -6,38 +6,33 @@ class PropertiesController < ApplicationController
   def index
     @properties = Property.all
 
-    prop_addr = "3940 INVERRARY BOULEVARD 301-A, LAUDERHILL"
-    mail_addr = "3940 INVERRARY BLVD APT 301-A LAUDERHILL FL 33319-4344"
+    # prop_addr = "3940 INVERRARY BOULEVARD 301-A, LAUDERHILL"
+    # mail_addr = "3940 INVERRARY BLVD APT 301-A LAUDERHILL FL 33319-4344"
+    #
+    #
+    # search_addr = prop_addr.gsub(" ","+").gsub("-","+")
+    # api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
+    #
+    # url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{search_addr}&key=#{api_key}"
+    # response = HTTParty.get url
+    #
+    # dom = Nokogiri::HTML(response.body)
+    # parsed = JSON.parse(dom)
+    # address_components = parsed['results'][0]['address_components']
+    #
+    # prop_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
+    # prop_city = "#{address_components[3]["long_name"]}"
+    # prop_state = "#{address_components[5]["short_name"]}"
+    # prop_zip = "#{address_components[7]["long_name"]}"
+    # prop_county = "#{address_components[4]["long_name"]}"
+    #
+    # name = 'STEWART,BALDWIN'
+    # Property.find_by(owner: name).update(prop_str_addr: prop_str_addr)
+    # Property.find_by(owner: name).update(prop_city: prop_city)
+    # Property.find_by(owner: name).update(prop_state: prop_state)
+    # Property.find_by(owner: name).update(prop_zip: prop_zip)
+    # Property.find_by(owner: name).update(prop_county: prop_county)
 
-
-    search_addr = prop_addr.gsub(" ","+").gsub("-","+")
-    api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
-
-    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{search_addr}&key=#{api_key}"
-    response = HTTParty.get url
-
-    dom = Nokogiri::HTML(response.body)
-    parsed = JSON.parse(dom)
-    address_components = parsed['results'][0]['address_components']
-
-    prop_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
-    prop_city = "#{address_components[3]["long_name"]}"
-    prop_state = "#{address_components[5]["short_name"]}"
-    prop_zip = "#{address_components[7]["long_name"]}"
-    prop_county = "#{address_components[4]["long_name"]}"
-
-    name = 'STEWART,BALDWIN'
-    Property.find_by(owner: name).update(prop_str_addr: prop_str_addr)
-    Property.find_by(owner: name).update(prop_city: prop_city)
-    Property.find_by(owner: name).update(prop_state: prop_state)
-    Property.find_by(owner: name).update(prop_zip: prop_zip)
-    Property.find_by(owner: name).update(prop_county: prop_county)      
-    # Property.update(prop_str_addr: prop_str_addr,
-    #                 prop_city: prop_city,
-    #                 prop_state: prop_state,
-    #                 prop_zip: prop_zip,
-    #                 prop_county: prop_county)
-    # Property
   end
 
   # def use_cabybara
