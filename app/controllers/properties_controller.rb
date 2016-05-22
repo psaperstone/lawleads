@@ -81,28 +81,33 @@ class PropertiesController < ApplicationController
       owner = property[1]
       record_date = property[7]
       doc_number_lp = property[10]
+
+      p owner
+
       get_assessor_data(owner, document_num, record_date, doc_number_lp)
     end
   end
 
 
   def get_assessor_data(owner, document_num, record_date, doc_number_lp)
-    # use_cabybara
+    use_cabybara
 
     browser = Capybara.current_session
     url = 'http://www.bcpa.net/RecName.asp'
     browser.visit url
 
     browser.find('#Text1').set(owner)
-    browser.find("a[href='javascript:MM_Edit();']").click
+    who_is_this = browser.find('#Text1').set(owner)
+    p who_is_this
 
+    browser.find("a[href='javascript:MM_Edit();']").click
+    what_is_this = browser.find("a[href='javascript:MM_Edit();']")
+    p what_is_this
+
+    p browser.current_url
 
     # IF broswer.page = 'http://www.bcpa.net/RecSearch.asp' THEN skip to next record
 
-    x = browser.current_url
-    p x
-    p x.include? 'http://www.bcpa.net/RecSearch.asp'
-    p x.class
     byebug
 
 
@@ -115,6 +120,7 @@ class PropertiesController < ApplicationController
                       :doc_number_lp => doc_number_lp)
       # next
     else
+      p browser.current_url
       prop_addr = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[1]/td[2]/span')[0].text
       # overwrite owner with owner(s) from more accurate data source
       owner = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/span')[0].text
