@@ -5,6 +5,39 @@ class PropertiesController < ApplicationController
   # GET /properties.json
   def index
     @properties = Property.all
+
+    prop_addr = "3940 INVERRARY BOULEVARD 301-A, LAUDERHILL"
+    mail_addr = "3940 INVERRARY BLVD APT 301-A LAUDERHILL FL 33319-4344"
+
+
+    search_addr = prop_addr.gsub(" ","+").gsub("-","+")
+    api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
+
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{search_addr}&key=#{api_key}"
+    response = HTTParty.get url
+
+    dom = Nokogiri::HTML(response.body)
+    parsed = JSON.parse(dom)
+    address_components = parsed['results'][0]['address_components']
+
+    prop_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
+    prop_city = "#{address_components[3]["long_name"]}"
+    prop_state = "#{address_components[5]["short_name"]}"
+    prop_zip = "#{address_components[7]["long_name"]}"
+    prop_county = "#{address_components[4]["long_name"]}"
+
+    name = 'STEWART,BALDWIN'
+    Property.find_by(owner: name).update(prop_str_addr: prop_str_addr)
+    Property.find_by(owner: name).update(prop_city: prop_city)
+    Property.find_by(owner: name).update(prop_state: prop_state)
+    Property.find_by(owner: name).update(prop_zip: prop_zip)
+    Property.find_by(owner: name).update(prop_county: prop_county)      
+    # Property.update(prop_str_addr: prop_str_addr,
+    #                 prop_city: prop_city,
+    #                 prop_state: prop_state,
+    #                 prop_zip: prop_zip,
+    #                 prop_county: prop_county)
+    # Property
   end
 
   # def use_cabybara
@@ -73,96 +106,96 @@ class PropertiesController < ApplicationController
   # end
 
 
-  def extract_CSV_data(data)
-    data.each do |property|
-      document_num = property[0]
-      owner = property[1]
-      record_date = property[7]
-      doc_number_lp = property[10]
-
-      p owner
-
-      get_assessor_data(owner, document_num, record_date, doc_number_lp)
-    end
-  end
-
-
-  def get_assessor_data(owner, document_num, record_date, doc_number_lp)
-    use_cabybara
-
-    browser2 = Capybara.current_session
-    url = 'http://www.bcpa.net/RecName.asp'
-    browser2.visit url
-
-    browser2.find('#Text1').set(owner)
-    who_is_this = browser2.find('#Text1').set(owner)
-    p who_is_this
-    sleep 1
-
-    byebug
-
-    browser.find('#Text1').set(name)
-    browser.find("a[href='javascript:MM_Edit();']").click
-
-    browser2.find("a[href='javascript:MM_Edit();']").click
-    what_is_this = browser2.find("a[href='javascript:MM_Edit();']")
-    p what_is_this
-    sleep 1
-
-    p browser2.current_url
-
-    # IF broswer.page = 'http://www.bcpa.net/RecSearch.asp' THEN skip to next record
-
-    byebug
+  # def extract_CSV_data(data)
+  #   data.each do |property|
+  #     document_num = property[0]
+  #     owner = property[1]
+  #     record_date = property[7]
+  #     doc_number_lp = property[10]
+  #
+  #     p owner
+  #
+  #     get_assessor_data(owner, document_num, record_date, doc_number_lp)
+  #   end
+  # end
 
 
-    if browser2.current_url.include? 'http://www.bcpa.net/RecSearch.asp'
-      #save the incomplete record to the partial model
-      byebug
-      Partial.create(:document_num => document_num,
-                      :owner => owner,
-                      :record_date => record_date,
-                      :doc_number_lp => doc_number_lp)
-      # next
-    else
-      p browser2.current_url
-      prop_addr = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[1]/td[2]/span')[0].text
-      # overwrite owner with owner(s) from more accurate data source
-      owner = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/span')[0].text
-      mail_addr = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/span')[0].text
-      abbr_legal_desc = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[3]/tbody/tr/td[2]/span')[0].text
-      prop_id = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]/span')[0].text
-      home_value = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[5]/tbody/tr[3]/td[4]/span')[0].text
-      #begin to save the complete record to the property model
-      parse_property_data(prop_addr)
-      parse_mailing_data(mail_addr)
-      #finish to save the complete record after parsing
-      create_new_property
-    end
-  end
+  # def get_assessor_data(owner, document_num, record_date, doc_number_lp)
+  #   use_cabybara
+  #
+  #   browser2 = Capybara.current_session
+  #   url = 'http://www.bcpa.net/RecName.asp'
+  #   browser2.visit url
+  #
+  #   browser2.find('#Text1').set(owner)
+  #   who_is_this = browser2.find('#Text1').set(owner)
+  #   p who_is_this
+  #   sleep 1
+  #
+  #   byebug
+  #
+  #   browser.find('#Text1').set(name)
+  #   browser.find("a[href='javascript:MM_Edit();']").click
+  #
+  #   browser2.find("a[href='javascript:MM_Edit();']").click
+  #   what_is_this = browser2.find("a[href='javascript:MM_Edit();']")
+  #   p what_is_this
+  #   sleep 1
+  #
+  #   p browser2.current_url
+  #
+  #   # IF broswer.page = 'http://www.bcpa.net/RecSearch.asp' THEN skip to next record
+  #
+  #   byebug
+  #
+  #
+  #   if browser2.current_url.include? 'http://www.bcpa.net/RecSearch.asp'
+  #     #save the incomplete record to the partial model
+  #     byebug
+  #     Partial.create(:document_num => document_num,
+  #                     :owner => owner,
+  #                     :record_date => record_date,
+  #                     :doc_number_lp => doc_number_lp)
+  #     # next
+  #   else
+  #     p browser2.current_url
+  #     prop_addr = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[1]/td[2]/span')[0].text
+  #     # overwrite owner with owner(s) from more accurate data source
+  #     owner = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/span')[0].text
+  #     mail_addr = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/span')[0].text
+  #     abbr_legal_desc = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[3]/tbody/tr/td[2]/span')[0].text
+  #     prop_id = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]/span')[0].text
+  #     home_value = browser2.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[5]/tbody/tr[3]/td[4]/span')[0].text
+  #     #begin to save the complete record to the property model
+  #     parse_property_data(prop_addr)
+  #     parse_mailing_data(mail_addr)
+  #     #finish to save the complete record after parsing
+  #     create_new_property
+  #   end
+  # end
 
-  # search google geocode api for breakout of address components for property address
-  def parse_property_data(prop_addr)
-
-    p "made it into parse_property_data"
-    byebug
-
-    search_addr = prop_addr.gsub(" ","+").gsub("-","+")
-    api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
-
-    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{search_addr}&key=#{api_key}"
-    response = HTTParty.get url
-
-    dom = Nokogiri::HTML(response.body)
-    parsed = JSON.parse(dom)
-    address_components = parsed['results'][0]['address_components']
-
-    prop_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
-    prop_city = "#{address_components[3]["long_name"]}"
-    prop_state = "#{address_components[5]["short_name"]}"
-    prop_zip = "#{address_components[7]["long_name"]}"
-    prop_county = "#{address_components[4]["long_name"]}"
-  end
+  # # search google geocode api for breakout of address components for property address
+  # def parse_property_data(prop_addr)
+  #
+  #   p "made it into parse_property_data"
+  #   byebug
+  #
+  #   search_addr = prop_addr.gsub(" ","+").gsub("-","+")
+  #   api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
+  #
+  #   url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{search_addr}&key=#{api_key}"
+  #   response = HTTParty.get url
+  #
+  #   dom = Nokogiri::HTML(response.body)
+  #   parsed = JSON.parse(dom)
+  #   address_components = parsed['results'][0]['address_components']
+  #
+  #   prop_str_addr = "#{address_components[0]["long_name"]} #{address_components[1]["long_name"]}"
+  #   prop_city = "#{address_components[3]["long_name"]}"
+  #   prop_state = "#{address_components[5]["short_name"]}"
+  #   prop_zip = "#{address_components[7]["long_name"]}"
+  #   prop_county = "#{address_components[4]["long_name"]}"
+  # end
 
 
   # GET /properties/1
