@@ -8,8 +8,8 @@ class PropertiesController < ApplicationController
 
     # Require the gems
     require 'capybara/poltergeist'
-    require 'httparty'
-    require 'byebug'
+    # require 'httparty'
+    # require 'byebug'
 
     # Configure Poltergeist to not blow up on websites with js errors aka every website with js
     # See more options at https://github.com/teampoltergeist/poltergeist#customization
