@@ -19,8 +19,11 @@ class Property < ActiveRecord::Base
 
 
   # def get_CSV
+  #   require 'capybara/poltergeist'
+  #   require 'httparty'
   #   use_cabybara
   #
+  #   p "byebug #1 - about to enter Broward Civil Court"
   #   byebug
   #
   #   # set browser
@@ -43,6 +46,10 @@ class Property < ActiveRecord::Base
   #   sleep 1
   #
   #   csv_url = browser.current_url
+  #
+  #   p "byebug #2 - got Broward page#1, about to pass Headers"
+  #   byebug
+  #
   #
   #   browser.driver.headers = {
   #   'Accept-Encoding' => 'gzip, deflate, sdch',
@@ -113,7 +120,7 @@ class Property < ActiveRecord::Base
   #   end
   # end
 
-  # search google geocode api for breakout of address components for property address
+  ## search google geocode api for breakout of address components for property address
   # def parse_property_data(prop_addr)
   #   search_addr = prop_addr.gsub(" ","+").gsub("-","+")
   #   api_key = 'AIzaSyDa1BWxkgm1n3tljbV-J_6bo3r7jV1UsD4'
