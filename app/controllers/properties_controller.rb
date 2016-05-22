@@ -6,6 +6,48 @@ class PropertiesController < ApplicationController
   def index
     @properties = Property.all
 
+    # Require the gems
+    require 'capybara/poltergeist'
+    require 'httparty'
+    require 'byebug'
+
+    # Configure Poltergeist to not blow up on websites with js errors aka every website with js
+    # See more options at https://github.com/teampoltergeist/poltergeist#customization
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(app, js_errors: false)
+    end
+
+    # Configure Capybara to use Poltergeist as the driver
+    Capybara.default_driver = :poltergeist
+
+    browser = Capybara.current_session
+    url = 'http://www.bcpa.net/RecName.asp'
+    browser.visit url
+
+    name = 'STEWART,BALDWIN'
+
+    browser.find('#Text1').set(name)
+    browser.find("a[href='javascript:MM_Edit();']").click
+
+    # browser.save_and_open_page
+
+    # IF broswer.page = 'http://www.bcpa.net/RecSearch.asp' THEN skip to next record
+
+    prop_addr = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[1]/td[2]/span')[0].text
+    owner = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/span')[0].text
+    mail_addr = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/span')[0].text
+    abbr_legal_desc = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[3]/tbody/tr/td[2]/span')[0].text
+    prop_id = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[1]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]/span')[0].text
+    home_value = browser.all(:xpath, '/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[1]/table[5]/tbody/tr[3]/td[4]/span')[0].text
+
+
+    puts owner
+    puts prop_addr
+    puts mail_addr
+    puts abbr_legal_desc
+    puts prop_id
+    puts home_value
+
     # prop_addr = "3940 INVERRARY BOULEVARD 301-A, LAUDERHILL"
     # mail_addr = "3940 INVERRARY BLVD APT 301-A LAUDERHILL FL 33319-4344"
     #
